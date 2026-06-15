@@ -162,7 +162,8 @@ export function ScheduleView({ events, error }: Props) {
                 >
                   <div
                     className={cn(
-                      `w-1 self-stretch rounded-full shrink-0 ${event.type.ribbon}`
+                      'w-1 self-stretch rounded-full shrink-0',
+                      event.type.ribbon
                     )}
                   />
 
