@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Calendar, Clock, RefreshCw, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { ScheduleEvent, ScheduleType } from '@/types/schedule'
+import { getScheduleTypeLabel, ScheduleEvent, ScheduleType, TYPE_CONFIG } from '@/types/schedule'
 
 interface Props {
   events: ScheduleEvent[]
@@ -30,19 +30,17 @@ function formatEventDate(date: string, time: string) {
 }
 
 export function ScheduleView({ events, error }: Props) {
-  const [filter, setFilter] = useState<
-    'all' | 'normal' | 'costream'
-  >('all')
+  const availableTypes = [
+      ...new Set(events.map((event) => event.type.type)),
+    ] as ScheduleType[]
 
-  const filtered = events.filter((event) => {
-    if (filter === 'all') return true
+    const [filter, setFilter] = useState<'all' | ScheduleType>('all')
 
-    if (filter === 'normal') {
-      return event.type.type === ScheduleType.Regular
-    }
+    const filtered = events.filter((event) => {
+      if (filter === 'all') return true
 
-    return event.type.type === ScheduleType.CoStream
-  })
+      return event.type.type === filter
+    })
 
   const grouped: Record<string, ScheduleEvent[]> = {}
 
@@ -83,7 +81,7 @@ export function ScheduleView({ events, error }: Props) {
       )}
 
       <div className="flex items-center gap-2 flex-wrap">
-        {(['all', 'normal', 'costream'] as const).map((f) => (
+        {(['all', ...availableTypes] as Array<'all' | ScheduleType>).map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
@@ -94,11 +92,7 @@ export function ScheduleView({ events, error }: Props) {
                 : 'bg-transparent text-muted-foreground border-border hover:border-primary/50 hover:text-foreground'
             )}
           >
-            {f === 'all'
-              ? 'All Streams'
-              : f === 'normal'
-                ? 'Regular'
-                : 'Co-stream'}
+            {getScheduleTypeLabel(f)}
           </button>
         ))}
 

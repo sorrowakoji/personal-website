@@ -30,6 +30,28 @@ export enum ScheduleType {
     CastOffStream = 4,
 }
 
+export function getScheduleTypeLabel(type: ScheduleType | 'all') {
+  switch (type) {
+    case ScheduleType.Regular:
+      return 'Regular'
+
+    case ScheduleType.CoStream:
+      return 'Co-Stream'
+
+    case ScheduleType.CollabOff:
+      return 'Collab (Off Stream)'
+
+    case ScheduleType.CastOnStream:
+      return 'Casting (On Stream)'
+
+    case ScheduleType.CastOffStream:
+      return 'Casting (Off Stream)'
+
+    default:
+      return 'All'
+  }
+}
+
 export const TYPE_CONFIG = {
   [ScheduleType.Regular]: {
     type: ScheduleType.Regular,
