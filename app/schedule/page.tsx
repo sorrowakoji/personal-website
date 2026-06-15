@@ -12,7 +12,7 @@ async function getScheduleEvents(): Promise<{
 }> {
   try {
     const res = await fetch(`${process.env.API_URL!}/api/schedule`, {
-      next: { revalidate: 300 },
+      next: { revalidate: 3 },
     })
 
     if (!res.ok) {
