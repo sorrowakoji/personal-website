@@ -75,17 +75,7 @@ export async function GET() {
         id: String(schedule.id),
 
         date: dateObj
-          .toISOString()
-          .split('T')[0],
-
-        time: dateObj.toLocaleTimeString(
-          'en-US',
-          {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false,
-          }
-        ),
+          .toISOString(),
 
         game: {
           id: String(game!.id),

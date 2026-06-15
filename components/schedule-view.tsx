@@ -10,23 +10,40 @@ interface Props {
   error?: string
 }
 
-function formatEventDate(date: string, time: string) {
-  const d = new Date(`${date}T${time}`)
+function formatEventDate(date: string) {
+  const d = new Date(date)
 
   return {
-    day: d.toLocaleDateString('en-US', {
+    day: d.toLocaleDateString(undefined, {
       weekday: 'long',
     }),
-    date: d.toLocaleDateString('en-US', {
+
+    date: d.toLocaleDateString(undefined, {
       month: 'short',
       day: 'numeric',
     }),
-    time: d.toLocaleTimeString('en-US', {
+
+    time: d.toLocaleTimeString(undefined, {
       hour: '2-digit',
       minute: '2-digit',
-      hour12: false,
     }),
+
+    timezone: Intl.DateTimeFormat(undefined, {
+      timeZoneName: 'short',
+    })
+      .formatToParts(d)
+      .find((part) => part.type === 'timeZoneName')
+      ?.value,
   }
+}
+
+function getTimezone(){
+  return Intl.DateTimeFormat(undefined, {
+      timeZoneName: 'short',
+    })
+      .formatToParts(new Date())
+      .find((part) => part.type === 'timeZoneName')
+      ?.value
 }
 
 export function ScheduleView({ events, error }: Props) {
@@ -45,7 +62,7 @@ export function ScheduleView({ events, error }: Props) {
   const grouped: Record<string, ScheduleEvent[]> = {}
 
   for (const event of filtered) {
-    const d = new Date(`${event.date}T${event.time}`)
+    const d = new Date(`${event.date}`)
 
     const weekStart = new Date(d)
     weekStart.setDate(d.getDate() - d.getDay())
@@ -123,7 +140,7 @@ export function ScheduleView({ events, error }: Props) {
               Week of {weekLabel}
             </span>
             <span className="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-3 pl-1">
-              All time in UTC+7
+              {`Time is shown in ${getTimezone()}`}
             </span>
           </div>
 
@@ -131,7 +148,6 @@ export function ScheduleView({ events, error }: Props) {
             {weekEvents.map((event) => {
               const formatted = formatEventDate(
                 event.date,
-                event.time
               )
 
               return (
@@ -157,7 +173,7 @@ export function ScheduleView({ events, error }: Props) {
                     <img
                       src={event.game.pfp}
                       alt={event.game.name}
-                      className="w-12 h-15 rounded-md object-cover"
+                      className="w-12 h-18 rounded-md object-cover"
                     />
                   </div>
 

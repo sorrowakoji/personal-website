@@ -2,7 +2,6 @@ export interface ScheduleEvent {
   id: string
   description: string
   date: string
-  time: string
   collaborator: Collaborator[]
   game: Game
   type: (typeof TYPE_CONFIG)[keyof typeof TYPE_CONFIG]

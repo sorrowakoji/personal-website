@@ -24,16 +24,6 @@ export async function Schedule({ events, error }: { events: ScheduleEvent[]; err
                 Upcoming streams and collaborations.
               </p>
             </div>
-
-            <a
-              href="https://twitch.tv"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-primary/50 text-sm transition-colors w-fit shrink-0"
-            >
-              <Tv2 className="w-4 h-4" />
-              Follow on Twitch
-            </a>
           </div>
         </div>
 
