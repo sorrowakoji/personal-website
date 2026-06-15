@@ -11,8 +11,7 @@ async function getScheduleEvents(): Promise<{
   error?: string
 }> {
   try {
-    console.log(process.env.NEXT_PUBLIC_BASE_URL);
-    const res = await fetch(`https://sorrowakoji.vercel.app/api/schedule`, {
+    const res = await fetch(`${process.env.API_URL!}/api/schedule`, {
       next: { revalidate: 300 },
     })
 
