@@ -5,6 +5,13 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+        pathname: '/**',
+      },
+    ],
   },
   allowedDevOrigins: ['192.168.137.1'],
 }
