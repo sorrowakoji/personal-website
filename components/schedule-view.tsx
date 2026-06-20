@@ -1,9 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { Calendar, Clock, RefreshCw, AlertCircle } from 'lucide-react'
+import { Calendar, Clock, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { getScheduleTypeLabel, ScheduleEvent, ScheduleType, TYPE_CONFIG } from '@/types/schedule'
+import {
+  getScheduleTypeLabel,
+  ScheduleEvent,
+  ScheduleType,
+  TYPE_CONFIG,
+} from '@/types/schedule'
 
 interface Props {
   events: ScheduleEvent[]
@@ -17,60 +22,61 @@ function formatEventDate(date: string) {
     day: d.toLocaleDateString(undefined, {
       weekday: 'long',
     }),
-
     date: d.toLocaleDateString(undefined, {
       month: 'short',
       day: 'numeric',
     }),
-
     time: d.toLocaleTimeString(undefined, {
       hour: '2-digit',
       minute: '2-digit',
     }),
-
-    timezone: Intl.DateTimeFormat(undefined, {
-      timeZoneName: 'short',
-    })
-      .formatToParts(d)
-      .find((part) => part.type === 'timeZoneName')
-      ?.value,
   }
 }
 
-function getTimezone(){
+function getTimezone() {
   return Intl.DateTimeFormat(undefined, {
-      timeZoneName: 'short',
-    })
-      .formatToParts(new Date())
-      .find((part) => part.type === 'timeZoneName')
-      ?.value
+    timeZoneName: 'short',
+  })
+    .formatToParts(new Date())
+    .find((part) => part.type === 'timeZoneName')
+    ?.value
 }
 
-export function ScheduleView({ events, error }: Props) {
-  const availableTypes = [
-      ...new Set(events.map((event) => event.type.type)),
-    ] as ScheduleType[]
+export function ScheduleView({
+  events,
+  error,
+}: Props) {
+  const availableTypes: ScheduleType[] = [
+    ...new Set(events.map((event) => event.type)),
+  ]
 
-    const [filter, setFilter] = useState<'all' | ScheduleType>('all')
+  const [filter, setFilter] =
+    useState<'all' | ScheduleType>('all')
 
-    const filtered = events.filter((event) => {
-      if (filter === 'all') return true
+  const filtered = events.filter((event) => {
+    if (filter === 'all') return true
 
-      return event.type.type === filter
-    })
+    return event.type === filter
+  })
 
   const grouped: Record<string, ScheduleEvent[]> = {}
 
   for (const event of filtered) {
-    const d = new Date(`${event.date}`)
+    const d = new Date(event.date)
 
     const weekStart = new Date(d)
-    weekStart.setDate(d.getDate() - d.getDay())
 
-    const key = weekStart.toLocaleDateString('en-US', {
-      month: 'long',
-      day: 'numeric',
-    })
+    weekStart.setDate(
+      d.getDate() - d.getDay()
+    )
+
+    const key = weekStart.toLocaleDateString(
+      'en-US',
+      {
+        month: 'long',
+        day: 'numeric',
+      }
+    )
 
     if (!grouped[key]) {
       grouped[key] = []
@@ -86,7 +92,7 @@ export function ScheduleView({ events, error }: Props) {
           <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
 
           <div>
-            <p className="font-semibold mb-0.5">
+            <p className="font-semibold">
               Could not load schedule
             </p>
 
@@ -98,10 +104,12 @@ export function ScheduleView({ events, error }: Props) {
       )}
 
       <div className="flex items-center gap-2 flex-wrap">
-        {(['all', ...availableTypes] as Array<'all' | ScheduleType>).map((f) => (
+        {(['all', ...availableTypes] as const).map((f) => (
           <button
             key={f}
-            onClick={() => setFilter(f)}
+            onClick={() =>
+              setFilter(f as 'all' | ScheduleType)
+            }
             className={cn(
               'px-4 py-1.5 rounded-full text-sm font-medium border transition-all duration-200',
               filter === f
@@ -112,11 +120,6 @@ export function ScheduleView({ events, error }: Props) {
             {getScheduleTypeLabel(f)}
           </button>
         ))}
-
-        {/* <span className="ml-auto text-xs text-muted-foreground flex items-center gap-1.5">
-          <RefreshCw className="w-3 h-3" />
-          Auto-refreshes every 5 minutes
-        </span> */}
       </div>
 
       {filtered.length === 0 && !error && (
@@ -133,129 +136,125 @@ export function ScheduleView({ events, error }: Props) {
         </div>
       )}
 
-      {Object.entries(grouped).map(([weekLabel, weekEvents]) => (
-        <div key={weekLabel}>
-          <div className="flex justify-between items-center">
-            <span className="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-3 pl-1">
-              Week of {weekLabel}
-            </span>
-            <span className="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-3 pl-1">
-              {`Time is shown in ${getTimezone()}`}
-            </span>
-          </div>
+      {Object.entries(grouped).map(
+        ([weekLabel, weekEvents]) => (
+          <div key={weekLabel}>
+            <div className="flex justify-between items-center">
+              <span className="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-3 pl-1">
+                Week of {weekLabel}
+              </span>
 
-          <div className="space-y-3">
-            {weekEvents.map((event) => {
-              const formatted = formatEventDate(
-                event.date,
-              )
+              <span className="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-3 pl-1">
+                Time is shown in {getTimezone()}
+              </span>
+            </div>
 
-              return (
-                <div
-                  key={event.id}
-                  className={cn(
-                    "group flex items-start gap-4 p-4 rounded-2xl border bg-card/50 hover:bg-card border-border hover:border-primary/40 transition-all duration-200",
-                    event.inactive
-                      ? 'opacity-50 bg-muted/20'
-                      : 'bg-card/50 hover:bg-card hover:border-primary/40'
-                  )}
-                >
+            <div className="space-y-3">
+              {weekEvents.map((event) => {
+                const formatted =
+                  formatEventDate(event.date)
+
+                return (
                   <div
+                    key={event.id}
                     className={cn(
-                      'w-1 self-stretch rounded-full shrink-0',
-                      event.type.ribbon
+                      "group flex items-start gap-4 p-4 rounded-2xl border bg-card/50 hover:bg-card border-border transition-all",
+                      event.inactive && "opacity-50"
                     )}
-                  />
-
-                  <div>
-                    <img
-                      src={event.game.pfp}
-                      alt={event.game.name}
-                      className="w-12 h-18 rounded-md object-cover"
+                  >
+                    <div
+                      className={cn(
+                        'w-1 self-stretch rounded-full shrink-0',
+                        TYPE_CONFIG[event.type]?.ribbon
+                      )}
                     />
-                  </div>
 
-                  <div className="min-w-[100px] shrink-0">
-                    <p className="text-xs text-muted-foreground font-medium">
-                      {formatted.day}
-                    </p>
-
-                    <p className="text-sm font-bold text-foreground mt-0.5">
-                      {formatted.date}
-                    </p>
-
-                    <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
-                      {formatted.time}
-                    </p>
-                  </div>
-
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        {event.collaborator.length === 0 && (
-                          <h3 className="font-semibold text-foreground text-xl leading-snug">
-                            {event.game.name}
-                          </h3>
-                        )}
-                        {event.collaborator.length > 0 && (
-                          <h4 className="font-semibold text-foreground text-md leading-snug">
-                            {event.game.name}
-                          </h4>
-                        )}
-                      </div>
-
-                      <span
-                        className={cn(
-                          'shrink-0 text-xs font-semibold px-2.5 py-0.5 rounded-full border',
-                          event.type.classes
-                        )}
-                      >
-                        {event.type.label}
-                      </span>
+                    <div>
+                      {event.game.pfp && (
+                        <img
+                          src={event.game.pfp}
+                          alt={event.game.name}
+                          className="w-12 h-18 rounded-md object-cover"
+                        />
+                      )}
                     </div>
 
-                    {event.description && (
-                      <p className="text-sm text-muted-foreground mt-2">
-                        {event.description}
+                    <div className="min-w-[100px] shrink-0">
+                      <p className="text-xs text-muted-foreground font-medium">
+                        {formatted.day}
                       </p>
-                    )}
 
-                    {event.collaborator.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mt-3">
-                        <span className="text-xs text-muted-foreground mt-1">
-                              Collaborators: 
-                            </span>
-                        {event.collaborator.map((collab) => (
-                          <a
-                            key={collab.id}
-                            href={collab.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 px-2 py-1 rounded-md bg-muted hover:bg-muted/80 transition-colors"
-                          >
-                            {collab.pfp && (
-                              <img
-                                src={collab.pfp}
-                                alt={collab.name}
-                                className="w-5 h-5 rounded-full object-cover"
-                              />
-                            )}
+                      <p className="text-sm font-bold">
+                        {formatted.date}
+                      </p>
 
-                            <span className="text-xs">
-                              {collab.name}
-                            </span>
-                          </a>
-                        ))}
+                      <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                        <Clock className="w-3 h-3" />
+                        {formatted.time}
+                      </p>
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-3">
+                        <h3 className="font-semibold text-foreground text-xl">
+                          {event.game.name}
+                        </h3>
+
+                        <span
+                          className={cn(
+                            'shrink-0 text-xs font-semibold px-2.5 py-0.5 rounded-full border',
+                            TYPE_CONFIG[event.type]?.classes
+                          )}
+                        >
+                          {getScheduleTypeLabel(event.type)}
+                        </span>
                       </div>
-                    )}
+
+                      {event.description && (
+                        <p className="text-sm text-muted-foreground mt-2">
+                          {event.description}
+                        </p>
+                      )}
+
+                      {event.collaborators.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mt-3">
+                          <span className="text-xs text-muted-foreground mt-1">
+                            Collaborators:
+                          </span>
+
+                          {event.collaborators.map((collab) => (
+                            <a
+                              key={collab.id}
+                              href={
+                                collab.socials?.[0]?.url || '#'
+                              }
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 px-2 py-1 rounded-md bg-muted hover:bg-muted/80"
+                            >
+                              {collab.pfp && (
+                                <img
+                                  src={collab.pfp}
+                                  alt={collab.name}
+                                  className="w-5 h-5 rounded-full object-cover"
+                                />
+                              )}
+
+                              <span className="text-xs">
+                                {collab.name}
+                              </span>
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              )
-            })}
+                )
+              })}
+            </div>
           </div>
-        </div>
-      ))}
+        )
+      )}
     </div>
   )
 }

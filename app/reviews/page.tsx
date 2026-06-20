@@ -11,7 +11,7 @@ export default function ReviewsPage() {
     <main className="graph-paper min-h-screen pt-16">
       <GameReviews />
 
-      <ComingSoonOverlay />
+      {/* <ComingSoonOverlay /> */}
     </main>
   )
 }

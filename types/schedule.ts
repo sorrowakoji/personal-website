@@ -1,11 +1,26 @@
 export interface ScheduleEvent {
-  id: string
-  description: string
+  id: number
   date: string
-  collaborator: Collaborator[]
-  game: Game
-  type: (typeof TYPE_CONFIG)[keyof typeof TYPE_CONFIG]
+  description: string | null
   inactive: boolean
+  type: ScheduleType
+
+  game: {
+    id: number
+    name: string
+    pfp: string | null
+  }
+
+  collaborators: {
+    id: number
+    name: string
+    pfp: string | null
+    socials: {
+      id: number
+      platform: string
+      url: string
+    }[]
+  }[]
 }
 
 export interface Collaborator {

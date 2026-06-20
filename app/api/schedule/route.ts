@@ -1,124 +1,76 @@
 import { NextResponse } from 'next/server'
 import { sql } from '@/lib/db'
-import { Collaborator, TYPE_CONFIG } from '@/types/schedule'
 
 export async function GET() {
   try {
     const schedules = await sql`
-        (
-        SELECT *
-        FROM schedule
-        WHERE date < NOW()
-        ORDER BY date DESC
-        LIMIT 1
-        )
+      SELECT
+        s.*,
 
-        UNION ALL
+        json_build_object(
+          'id', g.id,
+          'name', g.name,
+          'pfp', g.pfp
+        ) AS game,
 
-        (
-        SELECT *
-        FROM schedule
-        WHERE date >= NOW()
-        )
+        COALESCE(
+          json_agg(
+            DISTINCT jsonb_build_object(
+              'id', c.id,
+              'name', c.name,
+              'pfp', c.pfp,
+              'socials',
+              COALESCE(
+                (
+                  SELECT json_agg(
+                    jsonb_build_object(
+                      'id', sl.id,
+                      'platform', sl.platform,
+                      'url', sl.url
+                    )
+                  )
+                  FROM "SocialLink" sl
+                  WHERE sl.collaborator_id = c.id
+                ),
+                '[]'
+              )
+            )
+          ) FILTER (
+            WHERE c.id IS NOT NULL
+          ),
+          '[]'
+        ) AS collaborators
 
-        ORDER BY date ASC
-        `
+      FROM "Schedule" s
 
-    const gameIds = [
-      ...new Set(
-        schedules.map((s) => s.game_id)
-      ),
-    ]
+      LEFT JOIN "Game" g
+        ON g.id = s.game_id
 
-    const collaboratorIds = [
-      ...new Set(
-        schedules.flatMap(
-          (s) => s.collab_id ?? []
-        )
-      ),
-    ]
+      LEFT JOIN "_CollaboratorToSchedule" cs
+        ON cs."B" = s.id
 
-    const games =
-      gameIds.length > 0
-        ? await sql`
-            SELECT *
-            FROM game
-            WHERE id = ANY(${gameIds})
-          `
-        : []
+      LEFT JOIN "Collaborator" c
+        ON c.id = cs."A"
 
-    const collaborators =
-      collaboratorIds.length > 0
-        ? await sql`
-            SELECT *
-            FROM collaborator
-            WHERE id = ANY(${collaboratorIds})
-          `
-        : []
+      GROUP BY
+        s.id,
+        g.id
 
-    const gameMap = new Map(
-      games.map((g) => [g.id, g])
-    )
+      ORDER BY
+        s.date ASC
+    `
 
-    const collaboratorMap = new Map(
-      collaborators.map((c) => [c.id, c])
-    )
+    return NextResponse.json(schedules)
 
-    const events = schedules.map((schedule) => {
-      const dateObj = new Date(schedule.date)
-
-      const game = gameMap.get(
-        schedule.game_id
-      )
-
-      return {
-        id: String(schedule.id),
-
-        date: dateObj
-          .toISOString(),
-
-        game: {
-          id: String(game!.id),
-          name: game!.name,
-          pfp: game!.pfp,
-        },
-
-        collaborator: (
-          schedule.collab_id ?? []
-        )
-          .map((id: number) =>
-            collaboratorMap.get(id)
-          )
-          .filter(Boolean)
-          .map((c: Collaborator) => ({
-            id: String(c.id),
-            name: c.name,
-            pfp: c.pfp,
-            url: c.url,
-          })),
-
-        type:
-          TYPE_CONFIG[
-            schedule.type as keyof typeof TYPE_CONFIG
-          ],
-
-        inactive: dateObj < new Date(),
-
-        description: schedule.description,
-      }
-    })
-
-    return NextResponse.json(events)
   } catch (error) {
     console.error(error)
 
     return NextResponse.json(
       {
-        error:
-          'Failed to load schedule',
+        error: 'Failed to load schedule'
       },
       {
-        status: 500,
+        status: 500
       }
     )
   }

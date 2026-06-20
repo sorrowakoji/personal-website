@@ -1,5 +1,6 @@
 import { ScheduleEvent } from '@/types/schedule'
 import { Schedule } from '@/components/schedule'
+import { getBaseUrl } from '../utils/getBaseUrl'
 
 export const metadata = {
   title: 'Stream Schedule — Sorrow Akoji',
@@ -11,9 +12,14 @@ async function getScheduleEvents(): Promise<{
   error?: string
 }> {
   try {
-    const res = await fetch(`${process.env.API_URL!}/api/schedule`, {
-      next: { revalidate: 3 },
-    })
+    const res = await fetch(
+      `${getBaseUrl()}/api/schedule`,
+      {
+        next: {
+          revalidate: 3,
+        },
+      }
+    )
 
     if (!res.ok) {
       throw new Error('Failed to fetch schedule')
@@ -22,26 +28,35 @@ async function getScheduleEvents(): Promise<{
     const data = await res.json()
 
     return {
-      events: data.events ?? data,
-      error: data.error,
+      events: data,
     }
+
   } catch (err) {
+
     return {
       events: [],
+
       error:
         err instanceof Error
           ? err.message
           : 'Failed to fetch schedule',
     }
+
   }
 }
 
 export default async function SchedulePage() {
-  const { events, error } = await getScheduleEvents()
+  const {
+    events,
+    error,
+  } = await getScheduleEvents()
 
   return (
     <main className="min-h-screen pt-16">
-      <Schedule events={events} error={error} />
+      <Schedule
+        events={events}
+        error={error}
+      />
     </main>
   )
 }
