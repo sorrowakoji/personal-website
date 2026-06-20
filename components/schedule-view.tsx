@@ -9,6 +9,7 @@ import {
   ScheduleType,
   TYPE_CONFIG,
 } from '@/types/schedule'
+import { SocialIcon } from '@/utils/socials'
 
 interface Props {
   events: ScheduleEvent[]
@@ -52,6 +53,8 @@ export function ScheduleView({
 
   const [filter, setFilter] =
     useState<'all' | ScheduleType>('all')
+  const [selectedCollaborator, setSelectedCollaborator] =
+    useState<ScheduleEvent['collaborators'][number] | null>(null)
 
   const filtered = events.filter((event) => {
     if (filter === 'all') return true
@@ -218,20 +221,20 @@ export function ScheduleView({
 
                       {event.collaborators.length > 0 && (
                         <div className="flex flex-wrap gap-2 mt-3">
+
                           <span className="text-xs text-muted-foreground mt-1">
                             Collaborators:
                           </span>
 
                           {event.collaborators.map((collab) => (
-                            <a
+                            <button
                               key={collab.id}
-                              href={
-                                collab.socials?.[0]?.url || '#'
+                              onClick={() =>
+                                setSelectedCollaborator(collab)
                               }
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-2 px-2 py-1 rounded-md bg-muted hover:bg-muted/80"
+                              className="inline-flex items-center gap-2 px-2 py-1 rounded-md bg-muted hover:cursor-pointer hover:bg-white/50"
                             >
+
                               {collab.pfp && (
                                 <img
                                   src={collab.pfp}
@@ -243,8 +246,10 @@ export function ScheduleView({
                               <span className="text-xs">
                                 {collab.name}
                               </span>
-                            </a>
+
+                            </button>
                           ))}
+
                         </div>
                       )}
                     </div>
@@ -254,6 +259,108 @@ export function ScheduleView({
             </div>
           </div>
         )
+      )}
+
+      {selectedCollaborator && (
+        <div className="
+          fixed
+          inset-0
+          z-50
+          flex
+          items-center
+          justify-center
+          bg-black/50
+          px-4
+        ">
+
+          <div className="
+            relative
+            w-full
+            max-w-sm
+            rounded-2xl
+            border
+            bg-card
+            p-6
+            shadow-xl
+          ">
+
+            <button
+              onClick={() =>
+                setSelectedCollaborator(null)
+              }
+              className="
+                absolute
+                right-4
+                top-4
+                rounded-full
+                border
+                px-2
+                py-1
+                text-sm
+                hover:bg-red/50
+                hover:cursor-pointer
+              "
+            >
+              X
+            </button>
+
+
+            {selectedCollaborator.pfp && (
+              <img
+                src={selectedCollaborator.pfp}
+                alt={selectedCollaborator.name}
+                className="
+                  mx-auto
+                  mb-4
+                  h-32
+                  w-32
+                  rounded-full
+                  object-cover
+                "
+              />
+            )}
+
+
+            <h2 className="text-center text-xl font-bold">
+              {selectedCollaborator.name}
+            </h2>
+
+
+            <div className="mt-5 flex flex-wrap justify-center gap-2">
+
+              {selectedCollaborator.socials.map((social) => (
+                <a
+                  key={social.id}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
+                    flex
+                    items-center
+                    gap-2
+                    rounded-lg
+                    border
+                    px-3
+                    py-2
+                    text-sm
+                    hover:bg-muted
+                  "
+                >
+                  <SocialIcon
+                    platform={social.platform}
+                  />
+
+                  <span>
+                    {social.platform}
+                  </span>
+                </a>
+              ))}
+
+            </div>
+
+          </div>
+
+        </div>
       )}
     </div>
   )
