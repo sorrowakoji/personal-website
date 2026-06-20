@@ -60,7 +60,35 @@ export async function GET() {
         s.date ASC
     `
 
-    return NextResponse.json(schedules)
+    const now = new Date()
+
+    const upcoming = schedules.filter(
+      (schedule) =>
+        new Date(schedule.date) >= now
+    )
+
+    const latestPast = schedules
+      .filter(
+        (schedule) =>
+          new Date(schedule.date) < now
+      )
+      .sort(
+        (a, b) =>
+          new Date(b.date).getTime() -
+          new Date(a.date).getTime()
+      )
+      .slice(0, 1)
+      .map((latest) => ( {
+        ...latest,
+        inactive: true
+      }))
+
+    const result = [
+      ...latestPast,
+      ...upcoming,
+    ]
+
+    return NextResponse.json(result)
 
   } catch (error) {
     console.error(error)
