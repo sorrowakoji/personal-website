@@ -170,4 +170,14 @@ export const fanartsRaw: FanartItem[] = [
     artistPfp: '/pfp/kurobareena.jpg',
     size: 'normal',
   },
+  {
+    id: 15,
+    src: '/images/chibihead.png',
+    alt: 'Art trade for Ryuna Birthday',
+    artist: 'Ryuna Zahra',
+    artistHandle: '@ryunazahra',
+    artistUrl: 'https://twitter.com/ryunazahra',
+    artistPfp: '/pfp/ryunazahra.jpg',
+    size: 'normal',
+  },
 ]
