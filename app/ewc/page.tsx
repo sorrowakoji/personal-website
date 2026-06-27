@@ -1,8 +1,28 @@
 import EwcCalendar from "@/components/ewc/ewc-calendar";
-import { getEwcSchedule } from "@/utils/ewc";
+import { EwcSchedule } from "@/types/ewc";
 import { getTimezone } from "@/utils/time";
+import { getBaseUrl } from "../utils/getBaseUrl";
 
 export const dynamic = "force-dynamic";
+
+export const metadata = {
+  title: "EWC Schedule — Sorrow Akoji",
+  description: "Upcoming streams for Esports World Cup.",
+};
+
+async function getEwcSchedule(): Promise<EwcSchedule[]> {
+  const res = await fetch(`${getBaseUrl()}/api/ewc`, {
+    next: {
+      revalidate: 5,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch EWC schedule");
+  }
+
+  return res.json();
+}
 
 export default async function EwcPage() {
   const schedules = await getEwcSchedule();

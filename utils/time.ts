@@ -8,23 +8,12 @@ export function formatTime(date: string) {
   });
 }
 
-function getTimezoneOffset() {
-  const minutes = -new Date().getTimezoneOffset();
-
-  const sign = minutes >= 0 ? "+" : "-";
-
-  const abs = Math.abs(minutes);
-
-  const hours = Math.floor(abs / 60);
-  const mins = abs % 60;
-
-  return `UTC${sign}${hours}${mins ? `:${mins}` : ""}`;
-}
-
 export function getTimezone() {
-  return `${
-    Intl.DateTimeFormat().resolvedOptions().timeZone
-  } (${getTimezoneOffset()})`;
+  return Intl.DateTimeFormat(undefined, {
+    timeZoneName: "short",
+  })
+    .formatToParts(new Date())
+    .find((part) => part.type === "timeZoneName")?.value;
 }
 
 export function formatDate(date: string) {

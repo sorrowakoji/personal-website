@@ -10,6 +10,7 @@ import {
   TYPE_CONFIG,
 } from "@/types/schedule";
 import { SocialIcon } from "@/utils/socials";
+import { getTimezone } from "@/utils/time";
 
 interface Props {
   events: ScheduleEvent[];
@@ -32,14 +33,6 @@ function formatEventDate(date: string) {
       minute: "2-digit",
     }),
   };
-}
-
-function getTimezone() {
-  return Intl.DateTimeFormat(undefined, {
-    timeZoneName: "short",
-  })
-    .formatToParts(new Date())
-    .find((part) => part.type === "timeZoneName")?.value;
 }
 
 export function ScheduleView({ events, error }: Props) {
