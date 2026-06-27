@@ -34,7 +34,7 @@ export default async function EwcPage() {
       <p className="text-center text-xs">Click into the grid for more detail</p>
 
       <div className="min-h-12 text-center">
-        All time are in {getTimezone()} timezone
+        All time are in your timezone (hopefully)
       </div>
 
       <EwcCalendar schedules={schedules} />
