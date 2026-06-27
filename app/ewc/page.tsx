@@ -2,6 +2,8 @@ import EwcCalendar from "@/components/ewc/ewc-calendar";
 import { getEwcSchedule } from "@/utils/ewc";
 import { getTimezone } from "@/utils/time";
 
+export const dynamic = "force-dynamic";
+
 export default async function EwcPage() {
   const schedules = await getEwcSchedule();
 

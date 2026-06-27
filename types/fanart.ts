@@ -170,7 +170,7 @@ export const fanartsRaw: FanartItem[] = [
     size: "normal",
   },
   {
-    id: 15,
+    id: 16,
     src: "/images/chibihead.png",
     alt: "Art trade for Ryuna Birthday",
     artist: "Ryuna Zahra",
