@@ -1,75 +1,68 @@
-'use client'
+"use client";
 
-import Image from 'next/image'
-import Link from 'next/link'
-import { BookOpen, Clock, ChevronRight } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { cn } from '@/lib/utils'
+import Image from "next/image";
+import Link from "next/link";
+import { BookOpen, Clock, ChevronRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 interface ReviewWithGame {
-  id: string
-  title: string
-  score: number | null
-  playtime: number | null
-  cover_image: string | null
-  excerpt: string | null
-  content: string
-  status: string
-  slug: string
+  id: string;
+  title: string;
+  score: number | null;
+  playtime: number | null;
+  cover_image: string | null;
+  excerpt: string | null;
+  content: string;
+  status: string;
+  slug: string;
   game: {
-    id: string
-    name: string
-    pfp: string | null
-  } | null
+    id: string;
+    name: string;
+    pfp: string | null;
+  } | null;
 }
 
-function ScoreBadge({
-  score,
-}: {
-  score: number | null
-}) {
-  if (score === null) return null
+function ScoreBadge({ score }: { score: number | null }) {
+  if (score === null) return null;
 
   return (
     <div
       className={cn(
-        'px-3 py-1 rounded-lg text-sm font-bold',
+        "px-3 py-1 rounded-lg text-sm font-bold",
         score >= 8
-          ? 'bg-green-500/15 text-green-400'
+          ? "bg-green-500/15 text-green-400"
           : score >= 6
-            ? 'bg-yellow-500/15 text-yellow-400'
-            : 'bg-red-500/15 text-red-400'
+            ? "bg-yellow-500/15 text-yellow-400"
+            : "bg-red-500/15 text-red-400",
       )}
     >
       {score}/10
     </div>
-  )
+  );
 }
 
 export function GameReviews() {
-  const [reviews, setReviews] = useState<ReviewWithGame[]>([])
-  const [loading, setLoading] = useState(true)
+  const [reviews, setReviews] = useState<ReviewWithGame[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/reviews')
+    fetch("/api/reviews")
       .then((res) => res.json())
       .then((data) => {
-        setReviews(data)
-        setLoading(false)
+        setReviews(data);
+        setLoading(false);
       })
       .catch(() => {
-        setLoading(false)
-      })
-  }, [])
+        setLoading(false);
+      });
+  }, []);
 
-  const featured = reviews[0]
-  const others = reviews.slice(1) || []
+  const featured = reviews[0];
+  const others = reviews.slice(1) || [];
 
   return (
-    <section
-      id="reviews"
-      className="relative py-24 overflow-hidden"
-    >
+    <section id="reviews" className="relative py-24 overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-px bg-border" />
       <div className="absolute top-20 -left-32 w-96 h-96 rounded-full bg-primary/8 blur-[120px] pointer-events-none" />
 
@@ -115,10 +108,7 @@ export function GameReviews() {
               <div className="grid lg:grid-cols-2">
                 <div className="relative h-72 lg:h-full min-h-[320px]">
                   <Image
-                    src={
-                      featured.cover_image ||
-                      '/images/placeholder-game.jpg'
-                    }
+                    src={featured.cover_image || "/images/placeholder-game.jpg"}
                     alt={featured.game?.name || featured.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -171,17 +161,11 @@ export function GameReviews() {
         {others.length > 0 && (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {others.map((review) => (
-              <Link
-                key={review.id}
-                href={`/reviews/${review.slug}`}
-              >
+              <Link key={review.id} href={`/reviews/${review.slug}`}>
                 <article className="group h-full rounded-2xl border border-border bg-card overflow-hidden hover:border-primary/40 transition-all duration-300 flex flex-col">
                   <div className="relative h-52">
                     <Image
-                      src={
-                        review.cover_image ||
-                        '/images/placeholder-game.jpg'
-                      }
+                      src={review.cover_image || "/images/placeholder-game.jpg"}
                       alt={review.game?.name || review.title}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -226,5 +210,5 @@ export function GameReviews() {
         )}
       </div>
     </section>
-  )
+  );
 }

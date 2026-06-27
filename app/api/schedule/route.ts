@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server'
-import { sql } from '@/lib/db'
+import { NextResponse } from "next/server";
+import { sql } from "@/lib/db";
 
 export async function GET() {
   try {
@@ -58,48 +58,36 @@ export async function GET() {
 
       ORDER BY
         s.date ASC
-    `
+    `;
 
-    const now = new Date()
+    const now = new Date();
 
     const upcoming = schedules.filter(
-      (schedule) =>
-        new Date(schedule.date) >= now
-    )
+      (schedule) => new Date(schedule.date) >= now,
+    );
 
     const latestPast = schedules
-      .filter(
-        (schedule) =>
-          new Date(schedule.date) < now
-      )
-      .sort(
-        (a, b) =>
-          new Date(b.date).getTime() -
-          new Date(a.date).getTime()
-      )
+      .filter((schedule) => new Date(schedule.date) < now)
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
       .slice(0, 1)
-      .map((latest) => ( {
+      .map((latest) => ({
         ...latest,
-        inactive: true
-      }))
+        inactive: true,
+      }));
 
-    const result = [
-      ...latestPast,
-      ...upcoming,
-    ]
+    const result = [...latestPast, ...upcoming];
 
-    return NextResponse.json(result)
-
+    return NextResponse.json(result);
   } catch (error) {
-    console.error(error)
+    console.error(error);
 
     return NextResponse.json(
       {
-        error: 'Failed to load schedule'
+        error: "Failed to load schedule",
       },
       {
-        status: 500
-      }
-    )
+        status: 500,
+      },
+    );
   }
 }

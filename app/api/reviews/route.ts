@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server'
-import { sql } from '@/lib/db'
+import { NextResponse } from "next/server";
+import { sql } from "@/lib/db";
 
 export async function GET() {
   try {
@@ -19,20 +19,19 @@ export async function GET() {
         ON g.id = r.game_id
 
       ORDER BY r.id DESC
-    `
+    `;
 
-    return NextResponse.json(reviews)
-
+    return NextResponse.json(reviews);
   } catch (error) {
-    console.error(error)
+    console.error(error);
 
     return NextResponse.json(
       {
-        error: 'Failed to load reviews'
+        error: "Failed to load reviews",
       },
       {
-        status: 500
-      }
-    )
+        status: 500,
+      },
+    );
   }
 }

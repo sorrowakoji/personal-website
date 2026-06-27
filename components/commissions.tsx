@@ -1,17 +1,24 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { Check, X, Sparkles, AlertCircle } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { CommissionTier, commissionCategories, faqItems } from '@/types/comission'
+import { useState } from "react";
+import { Check, X, Sparkles, AlertCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
+import {
+  CommissionTier,
+  commissionCategories,
+  faqItems,
+} from "@/types/comission";
 
 export function Commissions() {
-  const [openFaq, setOpenFaq] = useState<number | null>(null)
-  const [currency, setCurrency] = useState<'usd' | 'idr'>('usd')
-  const commissionsOpen = true
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [currency, setCurrency] = useState<"usd" | "idr">("usd");
+  const commissionsOpen = true;
 
   return (
-    <section id="commissions" className="relative graph-paper py-24 overflow-hidden">
+    <section
+      id="commissions"
+      className="relative graph-paper py-24 overflow-hidden"
+    >
       <div className="absolute top-0 left-0 right-0 h-px bg-border" />
       <div className="absolute bottom-20 right-0 w-96 h-96 rounded-full bg-primary/8 blur-[120px] pointer-events-none" />
 
@@ -28,8 +35,8 @@ export function Commissions() {
             Commission a Video
           </h2>
           <p className="text-muted-foreground mt-3 max-w-xl mx-auto">
-            Custom animated videos for your VTuber, brand, or personal project. Each commission is
-            made with love and lots of caffeine.
+            Custom animated videos for your VTuber, brand, or personal project.
+            Each commission is made with love and lots of caffeine.
           </p>
         </div>
 
@@ -37,44 +44,46 @@ export function Commissions() {
         <div className="flex justify-center mb-12">
           <span
             className={cn(
-              'inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-semibold',
+              "inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-semibold",
               commissionsOpen
-                ? 'bg-green-500/10 text-green-400 border-green-500/30'
-                : 'bg-red-500/10 text-red-400 border-red-500/30',
+                ? "bg-green-500/10 text-green-400 border-green-500/30"
+                : "bg-red-500/10 text-red-400 border-red-500/30",
             )}
           >
             <span
               className={cn(
-                'w-2 h-2 rounded-full',
-                commissionsOpen ? 'bg-green-400 animate-pulse' : 'bg-red-400',
+                "w-2 h-2 rounded-full",
+                commissionsOpen ? "bg-green-400 animate-pulse" : "bg-red-400",
               )}
             />
-            {commissionsOpen ? 'Commissions Open — 3 slots available' : 'Commissions Closed'}
+            {commissionsOpen
+              ? "Commissions Open — 3 slots available"
+              : "Commissions Closed"}
           </span>
         </div>
 
-        {/* Currency toggle */ }
+        {/* Currency toggle */}
         <div className="flex justify-center mb-8">
           <div className="inline-flex items-center rounded-full border border-border p-1 bg-card">
             <button
-              onClick={() => setCurrency('usd')}
+              onClick={() => setCurrency("usd")}
               className={cn(
-                'px-3 py-1.5 text-sm rounded-full transition-colors',
-                currency === 'usd'
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground'
+                "px-3 py-1.5 text-sm rounded-full transition-colors",
+                currency === "usd"
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground",
               )}
             >
               USD
             </button>
 
             <button
-              onClick={() => setCurrency('idr')}
+              onClick={() => setCurrency("idr")}
               className={cn(
-                'px-3 py-1.5 text-sm rounded-full transition-colors',
-                currency === 'idr'
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground'
+                "px-3 py-1.5 text-sm rounded-full transition-colors",
+                currency === "idr"
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground",
               )}
             >
               IDR
@@ -91,22 +100,20 @@ export function Commissions() {
                   {category.title}
                 </h3>
 
-                <p className="text-muted-foreground">
-                  {category.description}
-                </p>
+                <p className="text-muted-foreground">{category.description}</p>
               </div>
 
               <div className="grid md:grid-cols-3 gap-6 ">
                 {category.tiers.map((tier) => {
-                  const Icon = tier.icon
+                  const Icon = tier.icon;
                   return (
                     <div
                       key={tier.id}
                       className={cn(
-                        'relative flex flex-col rounded-2xl border p-6 transition-all duration-300',
+                        "relative flex flex-col rounded-2xl border p-6 transition-all duration-300",
                         tier.popular
-                          ? 'border-primary/50 bg-card shadow-[0_0_40px_rgba(217,70,239,0.15)] scale-[1.02]'
-                          : 'border-border bg-card hover:border-primary/30',
+                          ? "border-primary/50 bg-card shadow-[0_0_40px_rgba(217,70,239,0.15)] scale-[1.02]"
+                          : "border-border bg-card hover:border-primary/30",
                       )}
                     >
                       {/* Popular badge */}
@@ -122,27 +129,33 @@ export function Commissions() {
                       <div className="flex items-center gap-3 mb-4">
                         <div
                           className={cn(
-                            'w-10 h-10 rounded-xl border flex items-center justify-center',
+                            "w-10 h-10 rounded-xl border flex items-center justify-center",
                             tier.accentBg,
                           )}
                         >
-                          <Icon className={cn('w-5 h-5', tier.accent)} />
+                          <Icon className={cn("w-5 h-5", tier.accent)} />
                         </div>
                         <div>
-                          <h3 className="font-display font-bold text-foreground">{tier.name}</h3>
-                          <p className="text-muted-foreground text-xs">{tier.description.slice(0, 40)}…</p>
+                          <h3 className="font-display font-bold text-foreground">
+                            {tier.name}
+                          </h3>
+                          <p className="text-muted-foreground text-xs">
+                            {tier.description.slice(0, 40)}…
+                          </p>
                         </div>
                       </div>
 
                       {/* Price */}
                       <div className="mb-5">
                         <span className="font-display font-bold text-4xl text-foreground">
-                          {currency === 'usd'
+                          {currency === "usd"
                             ? tier.price
                             : tier.priceIndo || tier.price}
                         </span>
                         {tier.priceNote && (
-                          <span className="text-muted-foreground text-sm ml-1">{tier.priceNote}</span>
+                          <span className="text-muted-foreground text-sm ml-1">
+                            {tier.priceNote}
+                          </span>
                         )}
                       </div>
 
@@ -154,13 +167,19 @@ export function Commissions() {
                       {/* Features */}
                       <ul className="space-y-2.5 mb-6 flex-1">
                         {tier.features.map((f) => (
-                          <li key={f} className="flex items-start gap-2 text-sm text-foreground">
+                          <li
+                            key={f}
+                            className="flex items-start gap-2 text-sm text-foreground"
+                          >
                             <Check className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
                             <span>{f}</span>
                           </li>
                         ))}
                         {tier.notIncluded?.map((f) => (
-                          <li key={f} className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <li
+                            key={f}
+                            className="flex items-start gap-2 text-sm text-muted-foreground"
+                          >
                             <X className="w-4 h-4 text-muted-foreground/50 flex-shrink-0 mt-0.5" />
                             <span>{f}</span>
                           </li>
@@ -171,17 +190,17 @@ export function Commissions() {
                       <a
                         href="mailto:sorrow.akoji@example.com?subject=Commission%20Inquiry"
                         className={cn(
-                          'block text-center py-3 rounded-full font-semibold text-sm transition-all duration-200',
+                          "block text-center py-3 rounded-full font-semibold text-sm transition-all duration-200",
                           tier.popular
-                            ? 'bg-primary text-primary-foreground glow-purple hover:opacity-90'
-                            : 'border border-border text-foreground hover:border-primary/50 hover:bg-primary/5',
+                            ? "bg-primary text-primary-foreground glow-purple hover:opacity-90"
+                            : "border border-border text-foreground hover:border-primary/50 hover:bg-primary/5",
                         )}
                       >
                         Submit Inquiry
                       </a>
                     </div>
-                  )
-              })}
+                  );
+                })}
               </div>
             </div>
           ))}
@@ -191,12 +210,13 @@ export function Commissions() {
         <div className="flex items-start gap-3 p-4 rounded-xl border border-amber-500/20 bg-amber-500/5 mb-14 max-w-2xl mx-auto">
           <AlertCircle className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
           <p className="text-amber-200/80 text-sm leading-relaxed">
-            By commissioning me, you agree to my{' '}
+            By commissioning me, you agree to my{" "}
             <a href="#" className="underline hover:text-amber-300">
               Terms of Service
             </a>
-            . I reserve the right to decline requests that conflict with my values. All commissions
-            are for personal use only unless a commercial license is negotiated.
+            . I reserve the right to decline requests that conflict with my
+            values. All commissions are for personal use only unless a
+            commercial license is negotiated.
           </p>
         </div>
 
@@ -250,5 +270,5 @@ export function Commissions() {
         </div> */}
       </div>
     </section>
-  )
+  );
 }

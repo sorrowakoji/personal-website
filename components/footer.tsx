@@ -1,34 +1,34 @@
-import Link from 'next/link'
-import { Ruler } from 'lucide-react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { socialLinks } from '@/types/socials'
+import Link from "next/link";
+import { Ruler } from "lucide-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { socialLinks } from "@/types/socials";
 
 const navGroups = [
   {
-    title: 'Explore',
+    title: "Explore",
     links: [
-      { label: 'Schedule', href: '/schedule' },
-      { label: 'Game Reviews', href: '/reviews' },
-      { label: 'Commissions', href: '/commissions' },
-      { label: 'Fanart Gallery', href: '/fanart' },
+      { label: "Schedule", href: "/schedule" },
+      { label: "Game Reviews", href: "/reviews" },
+      { label: "Commissions", href: "/commissions" },
+      { label: "Fanart Gallery", href: "/fanart" },
     ],
   },
   {
-    title: 'Channels',
+    title: "Channels",
     links: [
-      { label: 'Twitch Stream', href: 'https://twitch.tv/SorrowAkoji' },
-      { label: 'YouTube Clips', href: 'https://youtube.com/@SorrowAkoji' },
-      { label: 'Twitter Updates', href: 'https://twitter.com/SorrowAkoji' },
+      { label: "Twitch Stream", href: "https://twitch.tv/SorrowAkoji" },
+      { label: "YouTube Clips", href: "https://youtube.com/@SorrowAkoji" },
+      { label: "Twitter Updates", href: "https://twitter.com/SorrowAkoji" },
     ],
   },
   {
-    title: 'Info',
+    title: "Info",
     links: [
-      { label: 'Commission Terms', href: '/commissions#terms' },
-      { label: 'Contact / Collabs', href: 'mailto:sorrowakoji@gmail.com' },
+      { label: "Commission Terms", href: "/commissions#terms" },
+      { label: "Contact / Collabs", href: "mailto:sorrowakoji@gmail.com" },
     ],
   },
-]
+];
 
 export function Footer() {
   return (
@@ -99,5 +99,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

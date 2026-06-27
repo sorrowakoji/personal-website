@@ -6,15 +6,12 @@ export function ComingSoonOverlay() {
           Work In Progress
         </span>
 
-        <h2 className="font-display text-5xl font-bold mb-3">
-          Coming Soon
-        </h2>
+        <h2 className="font-display text-5xl font-bold mb-3">Coming Soon</h2>
 
         <p className="text-muted-foreground max-w-md mx-auto">
-          I'm still cooking this page. Please look
-          forward to it!
+          I'm still cooking this page. Please look forward to it!
         </p>
       </div>
     </div>
-  )
+  );
 }

@@ -1,15 +1,15 @@
-'use client'
+"use client";
 
-import Image from 'next/image'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTwitch } from '@fortawesome/free-brands-svg-icons'
-import { socialLinks } from '@/types/socials'
+import Image from "next/image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTwitch } from "@fortawesome/free-brands-svg-icons";
+import { socialLinks } from "@/types/socials";
 
 const stats = [
-  { value: '247K', label: 'Followers' },
-  { value: '1.2K', label: 'Hours Streamed' },
-  { value: '89', label: 'Games Reviewed' },
-]
+  { value: "247K", label: "Followers" },
+  { value: "1.2K", label: "Hours Streamed" },
+  { value: "89", label: "Games Reviewed" },
+];
 
 export function Hero() {
   return (
@@ -40,16 +40,24 @@ export function Hero() {
               </p>
               <h1 className="font-display font-bold text-5xl sm:text-6xl lg:text-7xl leading-tight">
                 <span className="text-foreground">Sorrow</span>
-                <span className="text-accent text-5xl text-glow-orange"> 📏</span>
+                <span className="text-accent text-5xl text-glow-orange">
+                  {" "}
+                  📏
+                </span>
                 <br />
                 <span className="text-primary text-glow-purple">Akoji</span>
-                <span className="text-accent text-5xl text-glow-orange"> 🐦‍⬛</span>
+                <span className="text-accent text-5xl text-glow-orange">
+                  {" "}
+                  🐦‍⬛
+                </span>
               </h1>
             </div>
 
             {/* Description */}
             <p className="text-muted-foreground text-lg leading-relaxed max-w-md">
-              Entertaining, Educating, Enjoying — Your good old VTuber teacher-persona, streaming games, esports, and connecting with the community. 
+              Entertaining, Educating, Enjoying — Your good old VTuber
+              teacher-persona, streaming games, esports, and connecting with the
+              community.
             </p>
 
             {/* CTA Buttons */}
@@ -118,8 +126,10 @@ export function Hero() {
       {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
         <div className="w-px h-12 bg-border" />
-        <span className="text-muted-foreground text-xs tracking-widest uppercase">Find More About Me</span>
+        <span className="text-muted-foreground text-xs tracking-widest uppercase">
+          Find More About Me
+        </span>
       </div>
     </section>
-  )
+  );
 }

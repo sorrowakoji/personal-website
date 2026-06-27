@@ -1,16 +1,16 @@
-import { NextResponse } from 'next/server'
-import { sql } from '@/lib/db'
+import { NextResponse } from "next/server";
+import { sql } from "@/lib/db";
 
 export async function GET(
   req: Request,
   {
     params,
   }: {
-    params: Promise<{ slug: string }>
-  }
+    params: Promise<{ slug: string }>;
+  },
 ) {
   try {
-    const { slug } = await params
+    const { slug } = await params;
 
     const reviews = await sql`
       SELECT
@@ -50,33 +50,30 @@ export async function GET(
         g.id
 
       LIMIT 1
-    `
+    `;
 
     if (!reviews.length) {
       return NextResponse.json(
         {
-          error: "Review not found"
+          error: "Review not found",
         },
         {
-          status: 404
-        }
-      )
+          status: 404,
+        },
+      );
     }
 
-    return NextResponse.json(
-      reviews[0]
-    )
-
+    return NextResponse.json(reviews[0]);
   } catch (error) {
-    console.error(error)
+    console.error(error);
 
     return NextResponse.json(
       {
-        error: "Failed to load review"
+        error: "Failed to load review",
       },
       {
-        status: 500
-      }
-    )
+        status: 500,
+      },
+    );
   }
 }

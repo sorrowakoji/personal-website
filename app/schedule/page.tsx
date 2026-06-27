@@ -1,62 +1,47 @@
-import { ScheduleEvent } from '@/types/schedule'
-import { Schedule } from '@/components/schedule'
-import { getBaseUrl } from '../utils/getBaseUrl'
+import { ScheduleEvent } from "@/types/schedule";
+import { Schedule } from "@/components/schedule";
+import { getBaseUrl } from "../utils/getBaseUrl";
 
 export const metadata = {
-  title: 'Stream Schedule — Sorrow Akoji',
-  description: 'Upcoming streams and collaborations.',
-}
+  title: "Stream Schedule — Sorrow Akoji",
+  description: "Upcoming streams and collaborations.",
+};
 
 async function getScheduleEvents(): Promise<{
-  events: ScheduleEvent[]
-  error?: string
+  events: ScheduleEvent[];
+  error?: string;
 }> {
   try {
-    const res = await fetch(
-      `${getBaseUrl()}/api/schedule`,
-      {
-        next: {
-          revalidate: 3,
-        },
-      }
-    )
+    const res = await fetch(`${getBaseUrl()}/api/schedule`, {
+      next: {
+        revalidate: 3,
+      },
+    });
 
     if (!res.ok) {
-      throw new Error('Failed to fetch schedule')
+      throw new Error("Failed to fetch schedule");
     }
 
-    const data = await res.json()
+    const data = await res.json();
 
     return {
       events: data,
-    }
-
+    };
   } catch (err) {
-
     return {
       events: [],
 
-      error:
-        err instanceof Error
-          ? err.message
-          : 'Failed to fetch schedule',
-    }
-
+      error: err instanceof Error ? err.message : "Failed to fetch schedule",
+    };
   }
 }
 
 export default async function SchedulePage() {
-  const {
-    events,
-    error,
-  } = await getScheduleEvents()
+  const { events, error } = await getScheduleEvents();
 
   return (
     <main className="min-h-screen pt-16">
-      <Schedule
-        events={events}
-        error={error}
-      />
+      <Schedule events={events} error={error} />
     </main>
-  )
+  );
 }

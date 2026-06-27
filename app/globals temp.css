@@ -1,13 +1,13 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
-@import 'shadcn/tailwind.css';
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: 'Plus Jakarta Sans', 'Plus Jakarta Sans Fallback';
-  --font-display: 'Space Grotesk', 'Space Grotesk Fallback';
-  --font-mono: 'Fira Code', 'monospace';
+  --font-sans: "Plus Jakarta Sans", "Plus Jakarta Sans Fallback";
+  --font-display: "Space Grotesk", "Space Grotesk Fallback";
+  --font-mono: "Fira Code", "monospace";
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -91,16 +91,24 @@
 /* Neon glow utilities */
 @layer utilities {
   .glow-purple {
-    box-shadow: 0 0 20px oklch(55.123% 0.27321 291.904 / 0.5), 0 0 60px oklch(66.509% 0.29228 319.817 / 0.2);
+    box-shadow:
+      0 0 20px oklch(55.123% 0.27321 291.904 / 0.5),
+      0 0 60px oklch(66.509% 0.29228 319.817 / 0.2);
   }
   .glow-orange {
-    box-shadow: 0 0 20px oklch(74.478% 0.17792 57.653 / 0.5), 0 0 60px oklch(71.915% 0.16168 64.698 / 0.459);
+    box-shadow:
+      0 0 20px oklch(74.478% 0.17792 57.653 / 0.5),
+      0 0 60px oklch(71.915% 0.16168 64.698 / 0.459);
   }
   .text-glow-purple {
-    text-shadow: 0 0 20px oklch(55.123% 0.27321 291.904 / 0.8), 0 0 40px oklch(66.509% 0.29228 319.817 / 0.4);
+    text-shadow:
+      0 0 20px oklch(55.123% 0.27321 291.904 / 0.8),
+      0 0 40px oklch(66.509% 0.29228 319.817 / 0.4);
   }
   .text-glow-orange {
-    text-shadow: 0 0 20px oklch(81.046% 0.15754 71.845 / 0.8), 0 0 40px oklch(62.544% 0.2052 37.883 / 0.4);
+    text-shadow:
+      0 0 20px oklch(81.046% 0.15754 71.845 / 0.8),
+      0 0 40px oklch(62.544% 0.2052 37.883 / 0.4);
   }
   .border-glow-purple {
     border-color: oklch(55.123% 0.27321 291.904 / 0.6);
@@ -111,7 +119,11 @@
     box-shadow: 0 0 12px oklch(74.478% 0.17792 57.653 / 0.3);
   }
   .star-pattern {
-    background-image: radial-gradient(circle, oklch(0.96 0.01 280 / 0.15) 1px, transparent 1px);
+    background-image: radial-gradient(
+      circle,
+      oklch(0.96 0.01 280 / 0.15) 1px,
+      transparent 1px
+    );
     background-size: 40px 40px;
   }
   .font-display {

@@ -1,11 +1,17 @@
-import { Calendar, Tv2 } from 'lucide-react'
-import { ScheduleView } from './schedule-view'
-import { ScheduleEvent } from '@/types/schedule'
+import { Calendar, Tv2 } from "lucide-react";
+import { ScheduleView } from "./schedule-view";
+import { ScheduleEvent } from "@/types/schedule";
 
-export async function Schedule({ events, error }: { events: ScheduleEvent[]; error?: string }) {
+export async function Schedule({
+  events,
+  error,
+}: {
+  events: ScheduleEvent[];
+  error?: string;
+}) {
   return (
     <section className="graph-paper relative py-24 overflow-hidden">
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <div className="mb-12">
           <div className="flex items-center gap-2 mb-3">
             <Calendar className="w-4 h-4 text-accent" />
@@ -27,12 +33,8 @@ export async function Schedule({ events, error }: { events: ScheduleEvent[]; err
           </div>
         </div>
 
-        <ScheduleView
-          events={events}
-          error={error}
-        />
+        <ScheduleView events={events} error={error} />
       </div>
     </section>
-  )
+  );
 }
-

@@ -1,32 +1,44 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Image from 'next/image'
-import { Heart, X, ChevronLeft, ChevronRight, ImageIcon, Send } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { fanartsRaw, FanartItem } from '@/types/fanart'
-
+import { useState } from "react";
+import Image from "next/image";
+import {
+  Heart,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  ImageIcon,
+  Send,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { fanartsRaw, FanartItem } from "@/types/fanart";
 
 export function FanartGallery() {
-  const [selectedId, setSelectedId] = useState<number | null>(null)
-  const [activeTag, setActiveTag] = useState('All')
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [activeTag, setActiveTag] = useState("All");
 
-  const fanarts = fanartsRaw.sort((a, b) => b.id - a.id) // Newest first
-  const allTags = ['All', ...Array.from(new Set(fanarts.flatMap((f) => f.tags ?? [])))]
+  const fanarts = fanartsRaw.sort((a, b) => b.id - a.id); // Newest first
+  const allTags = [
+    "All",
+    ...Array.from(new Set(fanarts.flatMap((f) => f.tags ?? []))),
+  ];
   const filtered =
-    activeTag === 'All' ? fanarts : fanarts.filter((f) => f.tags?.includes(activeTag))
+    activeTag === "All"
+      ? fanarts
+      : fanarts.filter((f) => f.tags?.includes(activeTag));
 
-  const selectedItem = fanarts.find((f) => f.id === selectedId)
-  const selectedIndex = filtered.findIndex((f) => f.id === selectedId)
+  const selectedItem = fanarts.find((f) => f.id === selectedId);
+  const selectedIndex = filtered.findIndex((f) => f.id === selectedId);
 
-  const openLightbox = (id: number) => setSelectedId(id)
-  const closeLightbox = () => setSelectedId(null)
+  const openLightbox = (id: number) => setSelectedId(id);
+  const closeLightbox = () => setSelectedId(null);
   const prevItem = () => {
-    if (selectedIndex > 0) setSelectedId(filtered[selectedIndex - 1].id)
-  }
+    if (selectedIndex > 0) setSelectedId(filtered[selectedIndex - 1].id);
+  };
   const nextItem = () => {
-    if (selectedIndex < filtered.length - 1) setSelectedId(filtered[selectedIndex + 1].id)
-  }
+    if (selectedIndex < filtered.length - 1)
+      setSelectedId(filtered[selectedIndex + 1].id);
+  };
 
   return (
     <section id="fanart" className="relative graph-paper py-24 overflow-hidden">
@@ -46,7 +58,8 @@ export function FanartGallery() {
             Memory of Every Moment
           </h2>
           <p className="text-muted-foreground mt-2 max-w-md mx-auto">
-            This page showcases my gratitude towards every artist who contributed to this collection.
+            This page showcases my gratitude towards every artist who
+            contributed to this collection.
           </p>
         </div>
 
@@ -70,10 +83,10 @@ export function FanartGallery() {
               key={tag}
               onClick={() => setActiveTag(tag!)}
               className={cn(
-                'px-3 py-1.5 rounded-full border text-xs font-medium transition-all duration-200',
+                "px-3 py-1.5 rounded-full border text-xs font-medium transition-all duration-200",
                 activeTag === tag
-                  ? 'bg-accent text-accent-foreground border-accent'
-                  : 'border-border text-muted-foreground hover:border-accent/40 hover:text-foreground',
+                  ? "bg-accent text-accent-foreground border-accent"
+                  : "border-border text-muted-foreground hover:border-accent/40 hover:text-foreground",
               )}
             >
               {tag}
@@ -84,10 +97,7 @@ export function FanartGallery() {
         {/* Masonry-style grid */}
         <div className="columns-2 md:columns-3 gap-4 space-y-4">
           {filtered.map((item) => (
-            <div
-              key={item.id}
-              className="break-inside-avoid"
-            >
+            <div key={item.id} className="break-inside-avoid">
               <button
                 onClick={() => openLightbox(item.id)}
                 className="group relative w-full overflow-hidden rounded-xl border border-border hover:border-accent/50 transition-all duration-300 block"
@@ -95,8 +105,12 @@ export function FanartGallery() {
               >
                 <div
                   className={cn(
-                    'relative w-full',
-                    item.size === 'tall' ? 'aspect-[3/4]' : item.size === 'wide' ? 'aspect-[4/3]' : 'aspect-square',
+                    "relative w-full",
+                    item.size === "tall"
+                      ? "aspect-[3/4]"
+                      : item.size === "wide"
+                        ? "aspect-[4/3]"
+                        : "aspect-square",
                   )}
                 >
                   <Image
@@ -112,8 +126,12 @@ export function FanartGallery() {
                       alt={`${item.artist}'s profile picture`}
                       className="w-10 h-10 rounded-full object-cover"
                     />
-                    <p className="font-semibold text-foreground text-sm truncate">{item.artist}</p>
-                    <p className="text-muted-foreground text-xs">{item.artistHandle}</p>
+                    <p className="font-semibold text-foreground text-sm truncate">
+                      {item.artist}
+                    </p>
+                    <p className="text-muted-foreground text-xs">
+                      {item.artistHandle}
+                    </p>
                   </div>
                 </div>
               </button>
@@ -173,7 +191,9 @@ export function FanartGallery() {
             </div>
             <div className="md:w-64 flex flex-col gap-4">
               <div>
-                <h3 className="font-display font-bold text-foreground">{selectedItem.artist}</h3>
+                <h3 className="font-display font-bold text-foreground">
+                  {selectedItem.artist}
+                </h3>
                 <a
                   href={selectedItem.artistUrl}
                   target="_blank"
@@ -183,7 +203,9 @@ export function FanartGallery() {
                   {selectedItem.artistHandle}
                 </a>
               </div>
-              <p className="text-muted-foreground text-sm leading-relaxed">{selectedItem.alt}</p>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                {selectedItem.alt}
+              </p>
               <div className="flex flex-wrap gap-1.5">
                 {selectedItem.tags?.map((tag) => (
                   <span
@@ -199,5 +221,5 @@ export function FanartGallery() {
         </div>
       )}
     </section>
-  )
+  );
 }
